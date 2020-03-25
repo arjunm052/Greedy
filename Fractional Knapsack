@@ -1,0 +1,57 @@
+#include<stdio.h>
+
+void swap(double *x,double *y){
+	double temp=*x;
+	*x=*y;
+	*y=temp;
+}
+
+double fractknap(double wt[],double val[],int n,int cap){
+	int i,j,cur=0;
+	double pw[n],res=0;
+	for(i=0;i<n;i++)
+	pw[i]=val[i]/wt[i];
+	int u=cap;
+	
+	for(i=0;i<n;i++){
+		for(j=i+1;j<n;j++){
+			if(pw[i]<pw[j]){
+				swap(&pw[j],&pw[i]);
+				swap(&wt[j],&wt[i]);
+				swap(&val[j],&val[i]);
+			}
+		}
+	}
+	
+	for(i=0;i<n;i++){
+		if(wt[i]>u)
+		break;
+		else{
+			res=res+val[i];
+			u=u-wt[i];
+		}
+	}
+	
+	if(i<n){
+		res=res+(double)(val[i]*(u/wt[i]));
+	}
+		
+	return res;	
+}
+
+int main(){
+	int n,i,cap;
+	printf("Enter the total no. of objects: ");
+	scanf("%d",&n);
+	double wt[n],val[n];
+	for(i=0;i<n;i++){
+		printf("Enter the weight of Object %d: ",i+1);
+		scanf("%lf",&wt[i]);
+		printf("Enter the profit for Object %d: ",i+1);
+		scanf("%lf",&val[i]);
+	}
+	printf("Enter the capacity of knapsack: ");
+	scanf("%d",&cap);
+	printf("Maximum Profit : %f",fractknap(wt,val,n,cap));
+	return 0;
+}
