@@ -1,0 +1,87 @@
+#include<stdio.h>
+#include<stdbool.h>
+#include<stdconio.h>
+
+#define INF 999999
+
+void dijkstra(int n,int G[][n],int source){
+	int cost[n][n],dist[n],pred[n];
+	int i,j,mindist,nextnode,count;
+	bool visited[n];
+	
+	//initializing the cost matrix: 
+	for(i=0;i<n;i++){
+		for(j=0;j<n;j++){
+			if(G[i][j]==0){
+				cost[i][j]=INF;
+			}
+			else
+				cost[i][j]=G[i][j];
+		}
+	}
+	
+	//initializing dist,pred and visited
+	for(i=0;i<n;i++){
+		dist[i]=cost[source][i];
+		pred[i]=source;
+		visited[i]=false;
+	}
+	
+	dist[source]=0;
+	visited[source]=1;
+	count=1;
+	
+	while(count<n-1){
+		mindist=INF;
+		for(i=0;i<n;i++){
+			if(dist[i]<mindist && !visited[i]){
+				mindist=dist[i];
+				nextnode=i;
+			}
+		}
+		
+		visited[nextnode]=true;
+		
+		for(i=0;i<n;i++){
+			if(!visited[i]){
+				if(mindist+cost[nextnode][i]<dist[i]){
+					dist[i]=mindist+cost[nextnode][i];
+					pred[i]=nextnode;
+				}
+			}
+		}
+		count++;
+	}
+	for(i=0;i<n;i++){
+		if(i!=source){
+			printf("\nDistance of node %d = %d",i,dist[i]);
+			printf("\nPath: %d",i);
+			
+			j=i;
+			do{
+				j=pred[j];
+				printf("<-%d",j);
+			}while(j!=source);
+		}
+	}
+	
+	
+}
+
+int main(){
+	int n,i,j,source;
+	printf("Enter the total no. of Vertices: ");
+	scanf("%d",&n);
+	int G[n][n];
+	printf("Enter the adjacency Matrix: ");
+	for(i=0;i<n;i++){
+		for(j=0;j<n;j++){
+			scanf("%d",&G[i][j]);
+		}
+	}
+	printf("Enter the Source Vertex: ");
+	scanf("%d",&source);
+  system("cls");
+	dijkstra(n,G,source);
+	return 0;
+}
