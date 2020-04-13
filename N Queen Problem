@@ -1,0 +1,66 @@
+#include<stdio.h>
+#define MAX 100
+#include<stdbool.h>
+int board[MAX][MAX];
+int N;
+
+void print(){
+	int i,j;
+	for(i=0;i<N;i++){
+		for(j=0;j<N;j++){
+			if(board[i][j]==1)
+			printf("Q\t");
+			else
+			printf("-\t");
+		}
+		printf("\n");
+	}
+	printf("\n\n\n");
+}
+
+bool isSafe(int r,int c){
+	int i,j;
+	
+	for(i=0;i<N;i++){
+		if(board[i][c]==1)
+		return false;
+	}
+	
+	for(i=r,j=c;i>=0 && j>=0;i--,j--)
+	if(board[i][j]==1)
+	return false;
+	
+	for(i=r,j=c;i>=0 && j<N;i--,j++){
+		if(board[i][j]==1)
+		return false;
+	}
+	
+	return true;
+}
+
+void nQueen(int r){
+	if(r==N)
+	print();
+	
+	int i;
+	for(i=0;i<N;i++){
+		if(isSafe(r,i)){
+			board[r][i]=1;
+			nQueen(r+1);
+			board[r][i]=0;
+		}
+	}
+}
+
+int main(){
+	int i,j;
+	printf("Enter the N for NxN Board: ");
+	scanf("%d",&N);
+	for(i=0;i<N;i++){
+		for(j=0;j<N;j++){
+			board[i][j]=0;
+		}
+	}
+	nQueen(0);
+	return 0;
+}
